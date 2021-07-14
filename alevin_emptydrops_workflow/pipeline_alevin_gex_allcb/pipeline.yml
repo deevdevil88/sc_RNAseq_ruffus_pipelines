@@ -14,11 +14,11 @@ R_path: /stopgap/cncb/proj021/src/alevin_gex_allcb_onelane/R
 emptydrops:
     conda_env: renv_4.0.5
     filter_fdr: 0.001 # FDR filter for removal of barcodes with no cells
-    filter_empty: Yes # Yes or No , should barcodes estimated to have no cells be removed from the output object
-    plot_empty_pval: Yes # Yes or No , should distribution of p-values fro assumed empty droplets be plotted
+    filter_empty: 1    # Yes (1) or No(0) , should barcodes estimated to have no cells be removed from the output object
+    plot_empty_pval: 1 # Yes (1) or No(0) , should distribution of p-values fro assumed empty droplets be plotted
     lower: 100  # A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets
     niters: 10000 # An integer scalar specifying the number of iterations to use for the Monte Carlo p-value calculations
-    test_ambient: No # Yes or No A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower
+    test_ambient: 0 # Yes (1) or No(0) A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower
     ignore: 0  # A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.0 means Null
     retain: 0 #A numeric scalar specifying the threshold for the total UMI count above which all barcodes are assumed to contain cells . 0 means NULL
     figures_dir: /stopgap/cncb/proj021/analyses/thirst2_alevin/figures.dir # "directory path for plots"

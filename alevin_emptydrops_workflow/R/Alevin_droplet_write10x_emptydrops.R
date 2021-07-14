@@ -27,13 +27,13 @@ option_list <- list(
     make_option(
         c( "--filter_empty"),
         action = "store",
-        default = "Yes",
+        default = 1,
         help = "Should barcodes estimated to have no cells be removed from the output object?"),
     
     make_option(
         c( "--plot_empty_pval"),
         action = "store",
-        default = "Yes",
+        default = 1,
         help = "plot distirbution of p-values for assumed empty droplets"),
     
     make_option(
@@ -53,7 +53,7 @@ option_list <- list(
     make_option(
         c( "--test_ambient"),
         action = "store",
-        default = "No",
+        default = 0,
         help = "A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower."
     ),
     make_option(
@@ -102,7 +102,7 @@ if (!dir.exists(opt$figures_dir)) {
 
 opt_table <- data.frame(value=unlist(opt), stringsAsFactors = FALSE)
 
-if(opt$test_ambient == "No"){
+if(opt$test_ambient == 0){
     test_ambient <- FALSE
 } else {
     test_ambient <- TRUE
@@ -119,6 +119,10 @@ if(opt$retain == 0){
 } else {
     retain <- opt$retain
 }
+
+cat( "modified option param test_ambient values are:", test_ambient, fill =T)
+cat( "modified option param ignore values are:", ignore, fill =T)
+cat( "modified option param retain values are:", retain, fill =T)
 
 
 # Read in allCB alevin quants matrix as as sparse matrix using tximport
@@ -203,7 +207,7 @@ dev.off()
 #p-values for low-total barcodes with test.ambient=TRUE
 
 set.seed(106890)
-if(opt$plot_empty_pval == "Yes"){
+if(opt$plot_empty_pval == 1){
     all.out <- emptyDrops(counts(sce), lower= opt$lower, test.ambient= TRUE) 
     pdf(file = paste0( opt$figures_dir,"/",opt$sample_label,"_","distribution_pvalues_assumed_emptydroplets.pdf"), height = 5, width = 7)
     hist(all.out$PValue[all.out$Total <= opt$lower & all.out$Total > 0],
@@ -226,7 +230,7 @@ cat(c(
         sum(is.cell, na.rm = TRUE),
         ' barcodes have cells.'
     ),
-    ifelse( opt$filter_empty == "Yes", paste(" Workflow Will filter to",  sum(is.cell, na.rm = TRUE), 'barcodes.'), ''),
+    ifelse( opt$filter_empty == 1, paste(" Workflow Will filter to",  sum(is.cell, na.rm = TRUE), 'barcodes.'), ''),
     '\nParameter values:',
     capture.output(print(opt_table))
 ), sep = '\n')
@@ -241,7 +245,7 @@ dev.off()
 
 # Subsetting the matrix to the cell-containing droplets.
 # (using 'which()' to handle NAs smoothly).
-if(opt$filter_empty == "Yes") {
+if(opt$filter_empty == 1) {
    # colnames(e.out) <- paste0('empty', colnames(e.out))
     #colData(sce)[,colnames(e.out)] <- e.out
     sce_cells <- sce[,which(e.out$FDR <= opt$filter_fdr), drop=FALSE]

@@ -95,14 +95,14 @@ def alevin_rna_alt(infiles, outfile):
 
     P.run(statement, job_memory=PARAMS["alevin_rna_memory"])
 
-@transform([alevin_rna,alevin_rna_alt], regex(r"Alevin_r_6.30_allcb/(.*)_rna/(.*)") , r"Alevin_r_6.30_allcb/\1_rna/alevin/.ed_done")
+@transform([alevin_rna,alevin_rna_alt], regex(r"Alevin_r_6.30_allcb/(.*)_rna/(.*)") , r"Alevin_r_6.30_allcb/\1_rna/alevin/.done")
 def droplet_utils(infile, outfile):
     '''
     Docstring
     '''
     infile = infile.replace(".alevin_done", "alevin/quants_mat.gz")
 
-    outfolder = outfile.replace("/.ed_done", "")
+    outfolder = outfile.replace("/.done", "")
     sample_name = outfolder.split("/")[1]
     #sample_name =  os.path.basename(outfolder).replace("_rna/alevin", "")
     filter_fdr = PARAMS["emptydrops_filter_fdr"]
@@ -140,17 +140,16 @@ def droplet_utils(infile, outfile):
         --figures_dir=%(figures_dir)s
         --barcode_plot_function=%(R_PATH)s/%(barcode_plot_function)s
     2> %(working_dir)s/%(outfolder)s/job.log
-    > %(working_dir)/%(outfolder)s/job.err &&
+    > %(working_dir)s/%(outfolder)s/job.err &&
     touch %(outfile)s
     """
 
-    P.run(statement, job_memory=PARAMS["emptydrops_memory"], job_cores=PARAMS["emptydrops_cores"], job_condaenv=PARAMS["emptydrops_conda_env"])
+    P.run(statement, job_memory=PARAMS["emptydrops_memory"],job_cores=PARAMS["emptydrops_cores"],job_condaenv=PARAMS["emptydrops_conda_env"])
 
 
 @follows(droplet_utils)
 def full():
     pass
-
 
 
 
