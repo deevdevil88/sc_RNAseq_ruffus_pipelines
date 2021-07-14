@@ -1,5 +1,5 @@
 
-input: 0
+input: 0 # 0 means current direcotry, 1 means fastq files are in data.dir in cwd , or a specific path to fastqs
 fastq_lanes: multiple  # either single or multiple
 alevin:
     index: /stopgap/cncb/proj032/backup/REF/Genomes/dmel_r6.30/dmel_all_r6.30_salmon_index
